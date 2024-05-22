@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  keycloak:
+    image: quay.io/phasetwo/phasetwo-keycloak:latest
+    container_name: keycloak_prod
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_URL_HOST: your_mysql_host
+      KC_DB_URL_PORT: 3306
+      KC_DB_URL_DATABASE: keycloak_db
+      KC_DB_USERNAME: keycloak_user
+      KC_DB_PASSWORD: keycloak_password
+      KC_TRANSACTION_XA_ENABLED: "false"
+      KC_HOSTNAME: keycloak.yourdomain.com
+      PROXY_ADDRESS_FORWARDING: "true"
+      KEYCLOAK_LOGLEVEL: DEBUG
+      KC_DB_URL_PROPERTIES: "useSSL=true&verifyServerCertificate=true&requireSSL=true"
+      KC_DB_SSL_CLIENT_CERT: "/etc/certs/client-cert.pem"
+      KC_DB_SSL_CLIENT_KEY: "/etc/certs/client-key.pem"
+      KC_DB_SSL_ROOT_CERT: "/etc/certs/ca-cert.pem"
+    ports:
+      - "8080:8080"
+    networks:
+      - keycloak_network
+    volumes:
+      - ./certs:/etc/certs
+    command:
+      - start
+      - --spi-email-template-provider=freemarker-plus-mustache
+      - --spi-email-template-freemarker-plus-mustache-enabled=true
+      - --spi-theme-cache-themes=false
+
+networks:
+  keycloak_network:
