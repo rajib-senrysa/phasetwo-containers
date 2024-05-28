@@ -17,8 +17,8 @@ server {
 Starting the container in prod mode
 docker-compose up
 
-More advance option
-docker run -d --name keycloak_prod \
+More advance option to run in prod
+docker run -d --name keycloak_custom_prod \
   -e KEYCLOAK_ADMIN=admin \
   -e KEYCLOAK_ADMIN_PASSWORD=admin \
   -e KC_DB=mysql \

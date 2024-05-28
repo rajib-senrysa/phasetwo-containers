@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   keycloak:
-    image: quay.io/phasetwo/phasetwo-keycloak:latest
+    image: rajibsenrysadockerhub/phasetwo-containers:latest
     container_name: keycloak_prod
     environment:
       KEYCLOAK_ADMIN: admin
