@@ -59,54 +59,54 @@ jobs:
         env:
           TAG: v${{ env.VERSION_TAG }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  release-cluster:
-    needs: release-public
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Version
-        run: |
-          TS=$(date +%s)
-          echo "VERSION_MAJOR=$VERSION_MAJOR" >> $GITHUB_ENV
-          echo "VERSION_SUBMAJOR=$VERSION_SUBMAJOR" >> $GITHUB_ENV
-          echo "VERSION_MINOR=$VERSION_MINOR" >> $GITHUB_ENV
-          echo "VERSION_TS=$TS" >> $GITHUB_ENV
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: adopt
-      - name: Set ssh keys
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: |
-            ${{ secrets.IDP_WIZARD_SSH_KEY }}
-      - name: Build with Maven
-        run: cd cluster/ && cp ../conf/cache-ispn-jdbc-ping.xml . && cp ../conf/p2-entrypoint.sh . && cd ../
-      - name: Remove ssh identities
-        run: ssh-add -D
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push to Docker Hub
-        uses: docker/build-push-action@v3
-        with:
-          context: "cluster/"
-          file: "cluster/Dockerfile"
-          platforms: linux/amd64,linux/arm64
-          pull: true
-          push: true
-          tags: |
-            rajibsenrysadockerhub/phasetwo-cluster:latest
-            rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}
-            rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}.${{ env.VERSION_SUBMAJOR }}
-            rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}.${{ env.VERSION_SUBMAJOR }}.${{ env.VERSION_MINOR }}
-            rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}.${{ env.VERSION_SUBMAJOR }}.${{ env.VERSION_MINOR }}.${{ env.VERSION_TS }}
+  # release-cluster:
+  #   needs: release-public
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Version
+  #       run: |
+  #         TS=$(date +%s)
+  #         echo "VERSION_MAJOR=$VERSION_MAJOR" >> $GITHUB_ENV
+  #         echo "VERSION_SUBMAJOR=$VERSION_SUBMAJOR" >> $GITHUB_ENV
+  #         echo "VERSION_MINOR=$VERSION_MINOR" >> $GITHUB_ENV
+  #         echo "VERSION_TS=$TS" >> $GITHUB_ENV
+  #     - name: Set up JDK 17
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         java-version: "17"
+  #         distribution: adopt
+  #     - name: Set ssh keys
+  #       uses: webfactory/ssh-agent@v0.7.0
+  #       with:
+  #         ssh-private-key: |
+  #           ${{ secrets.IDP_WIZARD_SSH_KEY }}
+  #     - name: Build with Maven
+  #       run: cd cluster/ && cp ../conf/cache-ispn-jdbc-ping.xml . && cp ../conf/p2-entrypoint.sh . && cd ../
+  #     - name: Remove ssh identities
+  #       run: ssh-add -D
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: docker.io
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Build and push to Docker Hub
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: "cluster/"
+  #         file: "cluster/Dockerfile"
+  #         platforms: linux/amd64,linux/arm64
+  #         pull: true
+  #         push: true
+  #         tags: |
+  #           rajibsenrysadockerhub/phasetwo-cluster:latest
+  #           rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}
+  #           rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}.${{ env.VERSION_SUBMAJOR }}
+  #           rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}.${{ env.VERSION_SUBMAJOR }}.${{ env.VERSION_MINOR }}
+  #           rajibsenrysadockerhub/phasetwo-cluster:${{ env.VERSION_MAJOR }}.${{ env.VERSION_SUBMAJOR }}.${{ env.VERSION_MINOR }}.${{ env.VERSION_TS }}
