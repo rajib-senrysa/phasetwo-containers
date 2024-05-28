@@ -21,6 +21,7 @@ More advance option to run in prod
 docker run -d --name keycloak_custom_prod \
   -e KEYCLOAK_ADMIN=admin \
   -e KEYCLOAK_ADMIN_PASSWORD=admin \
+  -e KC_HTTP_RELATIVE_PATH=/auth \
   -e KC_DB=mysql \
   -e KC_DB_URL_HOST=35.200.191.112 \
   -e KC_DB_URL_PORT=3306 \
@@ -38,7 +39,26 @@ docker run -d --name keycloak_custom_prod \
   rajibsenrysadockerhub/phasetwo-containers:latest \
   start --spi-email-template-provider=freemarker-plus-mustache --spi-email-template-freemarker-plus-mustache-enabled=true --spi-theme-cache-themes=false
 
+Starting container in dev mode
+docker run --name keycloak_custom_dev \
+  -e KEYCLOAK_ADMIN=admin \
+  -e KEYCLOAK_ADMIN_PASSWORD=admin \
+  -e KC_HTTP_RELATIVE_PATH=/auth \
+  -e KC_DB=mysql \
+  -e KC_DB_URL_HOST=35.200.191.112 \
+  -e KC_DB_URL_PORT=3306 \
+  -e KC_DB_URL_DATABASE=keycloak_db \
+  -e KC_DB_USERNAME=dev-env \
+  -e KC_DB_PASSWORD=PqkAqV7LRWTgtx8KTNe \
+  -p 8090:8080 \
+  rajibsenrysadockerhub/phasetwo-containers:latest \
+  start-dev --spi-email-template-provider=freemarker-plus-mustache --spi-email-template-freemarker-plus-mustache-enabled=true --spi-theme-cache-themes=false
+
 
 Access the web interface
+Prod
 http://keycloak.local
+
+Dev
+http://localhost:8090
 
