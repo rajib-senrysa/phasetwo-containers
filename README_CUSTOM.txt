@@ -40,7 +40,7 @@ docker run -d --name keycloak_custom_prod \
   start --spi-email-template-provider=freemarker-plus-mustache --spi-email-template-freemarker-plus-mustache-enabled=true --spi-theme-cache-themes=false
 
 Starting container in dev mode
-docker run --name keycloak_custom_dev \
+docker run --name keycloak_custom \
   -e KEYCLOAK_ADMIN=admin \
   -e KEYCLOAK_ADMIN_PASSWORD=admin \
   -e KC_HTTP_RELATIVE_PATH=/auth \
