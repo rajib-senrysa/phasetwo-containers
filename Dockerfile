@@ -16,6 +16,23 @@ COPY ./libs/ext/*.jar /opt/keycloak/providers/
 COPY ./libs/target/container*/*.jar /opt/keycloak/providers/
 
 RUN /opt/keycloak/bin/kc.sh --verbose build --spi-email-template-provider=freemarker-plus-mustache --spi-email-template-freemarker-plus-mustache-enabled=true --spi-theme-cache-themes=false
+# RUN /opt/keycloak/bin/kc.sh build \
+# --spi-phone-default-service=twilio \
+# --spi-message-sender-service-twilio-account=ACd096f24eddfc10e0679188443fb77e8c \
+# --spi-message-sender-service-twilio-token=70d5ad7a907443c192771719719f478c \
+# --spi-message-sender-service-twilio-number=+18283445365
+# --spi-phone-default-token-expires-in=60 \
+# --spi-phone-default-source-hour-maximum=10 \
+# --spi-phone-default-target-hour-maximum=3 \
+# --spi-phone-default-[$realm-]duplicate-phone=false \
+# --spi-phone-default-[$realm-]default-number-regex=^\+?\d+$ \ 
+# --spi-phone-default-[$realm-]valid-phone=true \
+# --spi-phone-default-[$realm-]canonicalize-phone-numbers=E164 \ 
+# --spi-phone-default-[$realm-]phone-default-region=US \
+# --spi-phone-default-[$realm-]compatible=false \
+# --spi-phone-default-[$realm-]otp-expires=3600
+
+
 
 FROM quay.io/phasetwo/keycloak-crdb:24.0.4
 
