@@ -35,6 +35,7 @@ docker run -d --name keycloak_custom_prod \
   -e KC_HTTP_ENABLED=true \
   -e PROXY_ADDRESS_FORWARDING=true \
   -e KEYCLOAK_LOGLEVEL=DEBUG \
+  -e JDBC_PARAMS='useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8' \
   -p 8090:8080 \
   rajibsenrysadockerhub/phasetwo-containers:latest \
   start --spi-email-template-provider=freemarker-plus-mustache --spi-email-template-freemarker-plus-mustache-enabled=true --spi-theme-cache-themes=false
@@ -50,9 +51,18 @@ docker run \
   -e KC_DB_URL_DATABASE=keycloak_db \
   -e KC_DB_USERNAME=dev-env \
   -e KC_DB_PASSWORD=PqkAqV7LRWTgtx8KTNe \
+  -e JDBC_PARAMS='useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8' \
   -p 8090:8080 \
   rajibsenrysadockerhub/phasetwo-containers:latest \
-  start-dev --spi-email-template-provider=freemarker-plus-mustache --spi-email-template-freemarker-plus-mustache-enabled=true --spi-theme-cache-themes=false
+  start-dev 
+  --spi-email-template-provider=freemarker-plus-mustache \
+  --spi-email-template-freemarker-plus-mustache-enabled=true \ 
+  --spi-theme-cache-themes=false \
+  --spi-connections-jpa-default-migration-strategy=manual \
+  --spi-phone-default-service=twilio \
+  --spi-message-sender-service-twilio-account=ACd096f24eddfc10e0679188443fb77e8c \
+  --spi-message-sender-service-twilio-token=70d5ad7a907443c192771719719f478c \
+  --spi-message-sender-service-twilio-number=+18283445365
 
 
 Access the web interface
@@ -61,4 +71,9 @@ http://keycloak.local
 
 Dev
 http://localhost:8090
+
+For mysql
+---------
+DROP DATABASE `keycloak_db`;
+CREATE DATABASE `keycloak_db` CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
